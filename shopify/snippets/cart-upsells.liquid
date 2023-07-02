@@ -1,0 +1,156 @@
+{% if section.settings.show_upsells_coll_1 == true %}
+	<div class="upsell-container">
+      <p class="upsell-text-min">{{ 'cart_booster.complete_your_cart' | t }}</p>
+   
+      {% if section.settings.product_upsell_1 != blank %}
+          <div id="product-uppsell-1">
+          {% for item in cart.items %}
+
+                  {% if item.product.handle == section.settings.product_upsell_1 %}
+                      <style>#product-uppsell-1{display:none!important;}</style>
+                  {% endif %}
+                  {% assign product_uppsell_1 = all_products[section.settings.product_upsell_1] %}
+                  {% for collection in item.product.collections %}      
+                      {% if section.settings.collection_upsell_1 == collection.handle %}
+            			<div class="upsell-product-content">
+                          <a href="{{ product_uppsell_1.url }}">
+                            <img class="upsell-img" src="{{ product_uppsell_1 | img_url }}">
+                            <span class="upsell-product-price">{{ product_uppsell_1.title }} - <span class="money">{{ product_uppsell_1.price | money }}</span></span>
+                          </a>
+                          <form class="upsellform" method="post" action="/cart/add" id="AddToCartForm--product-template" accept-charset="UTF-8" enctype="multipart/form-data">
+                              <select name="id" id="ProductSelect" class="product-single__variants no-js">
+                                  <option selected="selected" data-sku="" value="{{ product_uppsell_1.variants.first.id }}">
+                                  </option>
+                              </select>
+                              <button type="submit" class="upsell-btn">{{ 'cart_booster.add' | t }}</button>
+                          </form>
+            			</div>
+                      {% endif %}
+                  {% endfor %}
+
+          {% endfor %}
+          </div>
+      {% endif %}
+
+      {% if section.settings.product_upsell_2 != blank %}
+          <div id="product-uppsell-2">
+          {% for item in cart.items %}
+
+                {% if item.product.handle == section.settings.product_upsell_2 %}
+                    <style>#product-uppsell-2{display:none!important;}</style>
+                {% endif %}
+                  {% assign product_uppsell_2 = all_products[section.settings.product_upsell_2] %}
+                  {% for collection in item.product.collections %}
+                      {% if section.settings.collection_upsell_1 == collection.handle %}
+            			<div class="upsell-product-content">
+                          <a href="{{ product_uppsell_2.url }}">
+                            <img class="upsell-img" src="{{ product_uppsell_2 | img_url }}">
+                            <span class="upsell-product-price">{{ product_uppsell_2.title }} - <span class="money">{{ product_uppsell_2.price | money }}</span></span>
+                          </a>
+                          <form class="upsellform" method="post" action="/cart/add" id="AddToCartForm--product-template" accept-charset="UTF-8" enctype="multipart/form-data">
+                              <select name="id" id="ProductSelect" class="product-single__variants no-js">
+                                  <option selected="selected" data-sku="" value="{{ product_uppsell_2.variants.first.id }}">
+                                  </option>
+                              </select>
+                              <button type="submit" class="upsell-btn">{{ 'cart_booster.add' | t }}</button>
+                          </form>
+            			</div>
+                      {% endif %}
+                  {% endfor %}
+
+          {% endfor %}
+          </div>
+      {% endif %}
+      
+      <!-- second -->
+	{% if section.settings.show_upsells_coll_2 == true %}
+      {% if section.settings.product_upsell_3 != blank %}
+          <div id="product-uppsell-3">
+          {% for item in cart.items %}
+
+                {% if item.product.handle == section.settings.product_upsell_3 %}
+                    <style>#product-uppsell-3{display:none!important;}</style>
+                {% endif %}
+                  {% assign product_uppsell_3 = all_products[section.settings.product_upsell_3] %}
+                  {% for collection in item.product.collections %}
+                      {% if section.settings.collection_upsell_2 == collection.handle %}
+            			<div class="upsell-product-content">
+                          <a href="{{ product_uppsell_3.url }}">
+                            <img class="upsell-img" src="{{ product_uppsell_3 | img_url }}">
+                            <span class="upsell-product-price">{{ product_uppsell_3.title }} - <span class="money">{{ product_uppsell_3.price | money }}</span></span>
+                          </a>
+                          <form class="upsellform" method="post" action="/cart/add" id="AddToCartForm--product-template" accept-charset="UTF-8" enctype="multipart/form-data">
+                              <select name="id" id="ProductSelect" class="product-single__variants no-js">
+                                  <option selected="selected" data-sku="" value="{{ product_uppsell_3.variants.first.id }}">
+                                  </option>
+                              </select>
+                              <button type="submit" class="upsell-btn">{{ 'cart_booster.add' | t }}</button>
+                          </form>
+            			</div>
+                      {% endif %}
+                  {% endfor %}
+
+          {% endfor %}
+          </div>
+      {% endif %}
+
+      {% if section.settings.product_upsell_4 != blank %}
+          <div id="product-uppsell-4">
+          {% for item in cart.items %}
+
+                {% if item.product.handle == section.settings.product_upsell_4 %}
+                    <style>#product-uppsell-4{display:none!important;}</style>
+                {% endif %}
+                  {% assign product_uppsell_4 = all_products[section.settings.product_upsell_4] %}
+                  {% for collection in item.product.collections %}
+                      {% if section.settings.collection_upsell_2 == collection.handle %}
+            			<div class="upsell-product-content">
+                          <a href="{{ product_uppsell_4.url }}">
+                            <img class="upsell-img" src="{{ product_uppsell_4 | img_url }}">
+                            <span class="upsell-product-price">{{ product_uppsell_4.title }} - <span class="money">{{ product_uppsell_4.price | money }}</span></span>
+                          </a>
+                          <form class="upsellform" method="post" action="/cart/add" id="AddToCartForm--product-template" accept-charset="UTF-8" enctype="multipart/form-data">
+                              <select name="id" id="ProductSelect" class="product-single__variants no-js">
+                                  <option selected="selected" data-sku="" value="{{ product_uppsell_4.variants.first.id }}">
+                                  </option>
+                              </select>
+                              <button type="submit" class="upsell-btn">{{ 'cart_booster.add' | t }}</button>
+                          </form>
+            			</div>
+                      {% endif %}
+                  {% endfor %}
+
+          {% endfor %}
+          </div>
+      {% endif %}
+    {% endif %}
+	</div>
+{% endif %}
+
+<script>
+function isEmpty(el){
+    return !$.trim(el.html())
+}
+{% if section.settings.show_upsells_coll_1 == true and section.settings.show_upsells_coll_2 == false %}
+  if($("#product-uppsell-1").is(":hidden") && $("#product-uppsell-2").length == 0) {
+      $('.upsell-container').hide();
+  } else if($("#product-uppsell-1").is(":hidden") && $("#product-uppsell-2").is(":hidden")) {
+      $('.upsell-container').hide();
+  } else if(isEmpty($('#product-uppsell-1')) && isEmpty($('#product-uppsell-2'))) {
+      $('.upsell-container').hide();
+  }
+{% endif %}
+{% if section.settings.show_upsells_coll_1 == true and section.settings.show_upsells_coll_2 == true %}
+  if($("#product-uppsell-1").is(":hidden") && $("#product-uppsell-2").length == 0 && $("#product-uppsell-3").length == 0 && $("#product-uppsell-4").length == 0) {
+      $('.upsell-container').hide();
+  } else if($("#product-uppsell-1").is(":hidden") && $("#product-uppsell-2").is(":hidden") && $("#product-uppsell-3").is(":hidden") && $("#product-uppsell-4").is(":hidden")) {
+      $('.upsell-container').hide(); 
+  } else if($("#product-uppsell-3").is(":hidden") && $("#product-uppsell-4").is(":hidden") && isEmpty($('#product-uppsell-1')) && isEmpty($('#product-uppsell-2'))) {
+      $('.upsell-container').hide();
+  } else if($("#product-uppsell-1").is(":hidden") && $("#product-uppsell-2").is(":hidden") && isEmpty($('#product-uppsell-3')) && isEmpty($('#product-uppsell-4'))) {
+      $('.upsell-container').hide();
+  } else if(isEmpty($('#product-uppsell-1')) && isEmpty($('#product-uppsell-2')) && isEmpty($('#product-uppsell-3')) && isEmpty($('#product-uppsell-4'))) {
+      $('.upsell-container').hide();
+  }
+{% endif %}
+</script>

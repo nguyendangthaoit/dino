@@ -1,0 +1,95 @@
+<div class="gdrp-content" style="display:none;background-color:{{section.settings.color_background}};">
+  <div class="gdpr-msg">
+    <p class="gdpr-title" style="color:{{section.settings.color_title}};">{{ 'gdpr.title' | t }}</p>
+  	<p class="gdrp-text" style="color:{{section.settings.color_text}};">{{ 'gdpr.text' | t }}</p>
+  </div>
+  <div class="gdpr-submit">
+    <div class="gdpr-outer-div">
+      <div class="gdpr-middle-div">
+        <a href="#" class="gdpr-btn" style="background-color:{{section.settings.color_button}};color:{{section.settings.color_text_button}};">{{ 'gdpr.button' | t }}</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+var gdrpCookie = Cookies.get('gdrp-cookie');
+if(gdrpCookie != 'valid') {
+  $(".gdrp-content").show();
+  $(".gdpr-btn").click(function(){
+      Cookies.set('gdrp-cookie', 'valid', { expires: 7 });
+      $(".gdrp-content").hide();
+  });
+}
+</script>
+
+{% schema %}
+  {
+    "name": {
+		"en": "GDPR Cookies",
+		"fr": "RGPD Cookies"
+	},
+    "settings": [
+    {
+      "type": "color",
+      "id": "color_title",
+      "label": {
+          "en": "Title color",
+          "fr": "Couleur du titre"
+      },
+      "default": "#333333"
+    },
+    {
+      "type": "color",
+      "id": "color_text",
+      "label": {
+          "en": "Text color",
+          "fr": "Couleur du texte"
+      },
+      "default": "#333333"
+    },
+    {
+      "type": "color",
+      "id": "color_background",
+      "label": {
+          "en": "Background color",
+          "fr": "Couleur de fond"
+      },
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "color_button",
+      "label": {
+          "en": "Button color",
+          "fr": "Couleur du bouton"
+      },
+      "default": "#333333"
+    },
+    {
+      "type": "color",
+      "id": "color_text_button",
+      "label": {
+          "en": "Button text color",
+          "fr": "Couleur du texte du bouton"
+      },
+      "default": "#FFFFFF"
+    }
+	],
+    "presets": [
+      {
+        "name": {
+            "en": "GDPR Cookies",
+            "fr": "RGPD Cookies"
+        },
+        "category": "Extras"
+      }
+    ]
+  }
+{% endschema %}
+
+{% stylesheet %}
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}

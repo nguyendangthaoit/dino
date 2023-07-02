@@ -1,0 +1,214 @@
+{% if section.settings.move_trust_badges == true %}
+  {% if section.settings.show_trust_badges == true %} 
+    {% if section.settings.trust_badges == blank %}
+        <div class="trust-badges" style="margin-top:-10px;">
+            <img src="{{ 'trust-badges-min.png' | asset_img_url: 'master' }}" width="{{ section.settings.badgeswidth }}%">
+        </div>
+    {% else %}
+        <div class="trust-badges">
+            <img src="{{ section.settings.trust_badges | img_url: 'master' }}" width="{{ section.settings.badgeswidth }}%">
+        </div>
+    {% endif %}
+  {% endif %}  
+{% endif %} 
+
+{% if section.settings.show_countdown == true %} 
+  {% for collection in product.collections %}
+
+	  {% assign current_collection = collection.handle | downcase %}
+	  {% assign selected_collection = section.settings.collection_countdown | downcase %}
+
+      {% if current_collection == selected_collection %}
+        <div class="loading-bar-content">
+            <p class="countdown-txt">{{ 'booster.countdown_text' | t }}</p>
+            <div class="sales-loading-bar">
+            	<div class="sales-loading-bar-v" style="background-color:{{ section.settings.progressbar_color }};"></div>
+            </div>
+        </div>
+        <li class="countdown-height"> 
+            <div id="countdownv2ot"></div>
+        </li>
+      {% endif %}
+  {% endfor %}
+{% endif %}
+
+{% if section.settings.show_payment_icons == true %}
+  <li class="product-extra-row first-extra-row" style="color:{{settings.color_extra_txt_payment}};{%if settings.weight_extra_txt_payment == true%}font-weight:bold;{%endif%}">
+  	<span>
+      	<i class="demo-icon icon-lock">&#xe801;</i> {{ 'booster.payment_text' | t }}</span> <img id="iconsvisamastercard" src="{% if section.settings.show_paypal_img == true %}{{ 'visas-icons-paypal.png' | asset_img_url: 'master' }}{% else %}{{ 'visas-icons-no-paypal.png' | asset_img_url: 'master' }}{% endif %}">
+  	</span>
+  </li>
+{% endif %}
+
+{% if section.settings.show_product_stock == true %}
+<li class="product-extra-row" style="color:{{settings.color_extra_txt_instock}};{%if settings.weight_extra_txt_instock == true%}font-weight:bold;{%endif%}">
+    <span>
+        <i class="demo-icon icon-ok-circled">&#xe802;</i> {{ 'booster.instock_text' | t }}
+    </span>
+</li>
+{% endif %}
+
+{% if section.settings.show_product_shipping == true %}
+<li class="product-extra-row" style="color:{{settings.color_extra_txt_shipping}};{%if settings.weight_extra_txt_shipping == true%}font-weight:bold;{%endif%}">
+    <span>
+        <i class="demo-icon icon-truck">&#xe803;</i> {{ 'booster.shipping_text' | t }}
+    </span>
+</li>
+{% endif %}
+
+{% if section.settings.show_live == true %} 
+<li class="product-extra-row" style="color:{{settings.color_extra_txt_people}};{%if settings.weight_extra_txt_people == true%}font-weight:bold;{%endif%}">
+    <span>
+        <i class="demo-icon icon-bell-alt">&#xf0f3;</i> <span class="random_extra" id="peoplenb" data-extratype="random">{{section.settings.liveviewrange}}</span> <span>{{ 'booster.live_views_text' | t }}</span>
+    </span>
+</li>
+{% endif %} 
+{% if section.settings.show_current_orders == true %} 
+<li class="product-extra-row" style="color:{{settings.color_extra_txt_orders}};{%if settings.weight_extra_txt_orders == true%}font-weight:bold;{%endif%}">
+    <span>
+        <i class="demo-icon icon-basket">&#xe804;</i> {{ 'booster.current_orders_text1' | t }} <span class="random_extra" id="ordernb">{{section.settings.liveorderrange}}</span> {{ 'booster.current_orders_text2' | t }}
+    </span>
+</li>
+{% endif %} 
+{% if section.settings.show_stock_left == true %} 
+<li class="product-extra-row" style="color:{{settings.color_extra_txt_stockleft}};{%if settings.weight_extra_txt_stockleft == true%}font-weight:bold;{%endif%}">
+    <span>
+        <i class="demo-icon icon-fire">&#xe805;</i> {{ 'booster.stock_left_text1' | t }} <span class="random_extra" id="stockleftnb">{{section.settings.livestockrange}}</span> {{ 'booster.stock_left_text2' | t }}
+    </span>
+</li>
+{% endif %} 
+
+{% if section.settings.move_trust_badges == false %}
+  {% if section.settings.show_trust_badges == true %} 
+    {% if section.settings.trust_badges == blank %}
+        <div class="trust-badges">
+            <img src="{{ 'trust-badges-min.png' | asset_img_url: 'master' }}" width="{{ section.settings.badgeswidth }}%">
+        </div>
+    {% else %}
+        <div class="trust-badges">
+            <img src="{{ section.settings.trust_badges | img_url: 'master' }}" width="{{ section.settings.badgeswidth }}%">
+        </div>
+    {% endif %}
+  {% endif %}  
+{% endif %}  
+
+{% if section.settings.show_countdown == true %}
+    {% if product.compare_at_price > product.price %}
+    <script>
+    // Get seconds bewtween days
+    var currentDate = new Date();
+    var currentDateTimestamp = new Date().getTime();
+    var countDownDate = "{{ section.settings.day_end_countdown }}-{{ section.settings.month_end_countdown }}-{{ section.settings.year_end_countdown }} 00:01";
+    var dateTimeParts = countDownDate.split(' '),
+        timeParts = dateTimeParts[1].split(':'),
+        dateParts = dateTimeParts[0].split('-');
+    var countDownDateFormat = new Date(dateParts[2], parseInt(dateParts[1], 10) - 1, dateParts[0], timeParts[0], timeParts[1]);
+    var hoursBetweenDates = Math.abs(countDownDateFormat - currentDate) / 36e5;
+    var secondsBetweenDates = hoursBetweenDates*60*60;
+    var ninetyEightDaysInSeconds = 8467200;
+    if(secondsBetweenDates > ninetyEightDaysInSeconds) {
+        secondsBetweenDates = ninetyEightDaysInSeconds;
+    }
+    // Countdown
+    var clock;
+    var countdownLang;
+    var countdownEndMsg;
+    {% if section.settings.countdown_lang == 'FR' %}
+    countdownLang = 'fr';
+    countdownEndMsg = 'L\'offre se termine dans quelques secondes...';
+    {% else %}
+    countdownLang = 'en';
+    countdownEndMsg = 'Only a few seconds left...';
+    {% endif %}
+
+    clock = $('#countdownv2ot').FlipClock({
+        clockFace: 'DailyCounter',
+        autoStart: false,
+        language: countdownLang,
+        callbacks: {
+            stop: function() {
+                $('.sales-loading-bar-v').css({"background-color":"#ff0000","width":"100%","border-radius":"10px"});
+                $('.product-form__item--submit').hide();
+                $('.countdown-over').show();
+            }
+        }
+    });
+
+    // Check if date is before today
+    if (countDownDateFormat < new Date()) {
+        secondsBetweenDates = 0;
+    }             
+    // Set Time
+    clock.setTime(secondsBetweenDates);
+    clock.setCountdown(true);
+    clock.start();
+    </script>
+    {% endif %}
+{% endif %}
+
+<script>
+{% if section.settings.show_live == true %}
+// random views
+setInterval(function() {
+	var randomNumberViews = Math.floor((Math.random() * {{ section.settings.liveviewrange }}) + 2);
+	$('#peoplenb').text(randomNumberViews);
+}, 6000);
+{% endif %}
+{% if section.settings.show_current_orders == true %}
+// random order
+setInterval(function() {
+	var randomNumberOrder = Math.floor((Math.random() * {{ section.settings.liveorderrange }}) + 2);
+	$('#ordernb').text(randomNumberOrder);
+}, 10000);
+{% endif %}
+{% if section.settings.show_stock_left == true %}
+// random stock + cookie
+	function getCookie(name) {
+        var v = document.cookie.match('(^|;) ?' + name + '=([^;]*)(;|$)');
+        return v ? v[2] : null;
+    }
+  	if(getCookie('cookiestock{{product.handle}}') == null) {
+        var randomNumberStock = Math.floor((Math.random() * {{ section.settings.livestockrange }}) + 1);
+        var dateCurrent = new Date();
+        var dateNextWeek = new Date(dateCurrent.getTime() + 7 * 24 * 60 * 60 * 1000);
+        dateNextWeek = dateNextWeek.toUTCString();
+        document.cookie = 'cookiestock{{product.handle}}='+randomNumberStock+'; expires='+dateNextWeek+'; path=/';
+        $('#stockleftnb').text(randomNumberStock);
+    } else {
+    	var getCookieProduct = getCookie('cookiestock{{product.handle}}');
+      	$('#stockleftnb').text(getCookieProduct);
+    }
+{% endif %}
+{% if section.settings.show_save_money == true and product.compare_at_price > product.price %}
+// Display save price percent
+function updateSavePrice() {
+  // check if saveprice is OK
+  window.setInterval(function(){
+    var productCurrentPrice = $('#ProductPrice-{{ section.id }}').text().trim();
+    var productCurrentPriceDot = productCurrentPrice.replace(",",".");
+    productCurrentPriceCut = parseFloat(productCurrentPriceDot.match(/-?(?:\d+(?:\.\d*)?|\.\d+)/)[0]).toFixed(2);
+    var productCurrentComparePrice = $('#ComparePrice-{{ section.id }}').text().trim();
+    var productCurrentComparePriceDot = productCurrentComparePrice.replace(",",".");
+    productCurrentComparePriceCut = parseFloat(productCurrentComparePriceDot.match(/-?(?:\d+(?:\.\d*)?|\.\d+)/)[0]).toFixed(2);
+    var saveAmount = productCurrentComparePriceCut - productCurrentPriceCut;
+    saveAmount = saveAmount.toFixed(2);
+    var savePercent = saveAmount*100/productCurrentComparePriceCut;
+    savePercent = savePercent.toFixed(0);
+    if(/[,\.]/.test(productCurrentPrice)) {
+    	var priceWithCurrency = productCurrentPrice.match(/-?\d+\:?(\.|,)\d+/)[0];
+    } else {
+    	var priceWithCurrency = productCurrentPrice;
+    }
+    var saveString = productCurrentPrice.replace(priceWithCurrency, saveAmount);
+    $('#variantsaveprice').text(saveString);
+    $('#variantpercent').text(savePercent);
+  }, 100);
+}
+updateSavePrice(); 
+$(".selector-wrapper select").change(function(){
+  setTimeout(function() {
+  	updateSavePrice();
+  }, 100);
+});
+{% endif %}
+</script>

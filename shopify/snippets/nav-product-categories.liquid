@@ -1,0 +1,6 @@
+<div class="collection-product-list">
+  <span class="desc-coll-text-big">{{ 'general.accessibility.productpage_categories' | t }}:</span>
+{% for collection in product.collections %}
+  	<a class="desc-coll-url" href="{{ collection.url }}">{{ collection.title }}</a><span class="hide-coma">,</span>
+{% endfor %}
+</div>

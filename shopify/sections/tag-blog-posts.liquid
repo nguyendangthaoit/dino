@@ -1,0 +1,41 @@
+{% if section.settings.show_tag_blog_posts == true %}
+	{% if blog.all_tags.size > 0 %}
+        <div class="grid__item medium-up--one-quarter large-up--one-fifth">
+          <div class="content-block content-block--small">
+            <h3 class="h6 content-block__title">{{ 'blogs.article.tags' | t }}</h3>
+            <ul class="list--no-bullets list--bold">
+              {% for tag in blog.all_tags %}
+                {% if current_tags contains tag %}
+                <li class="tag-css">{{ tag }}</li>
+                {% else %}
+                <li class="tag-css">{{ tag | link_to_tag: tag }}</li>
+                {% endif %}
+              {% endfor %}
+            </ul>
+          </div>
+        </div>
+      {% endif %}
+{% endif %}
+
+{% schema %}
+  {
+    "name": "Tags",
+    "settings": [
+    {
+      "type": "checkbox",
+      "id": "show_tag_blog_posts",
+      "label": {
+          "en": "Enable",
+          "fr": "Activer"
+      },
+      "default": true
+    }
+	]
+  }
+{% endschema %}
+
+{% stylesheet %}
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}

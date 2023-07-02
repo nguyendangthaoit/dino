@@ -1,0 +1,338 @@
+{% if section.settings.select_tracking_method == 'aliexpress' %}
+  <div class="parcel-tracking-container">
+    <div class="form-inline" action="">
+      <input type="text" id="trackingnumber" placeholder="Numéro de suivi" value="">
+      <button type="submit" id="submitTrack" onClick="sendData()">{{ 'tracking.submit' | t }}</button>
+    </div>
+    <div id="orderStat" style="display:none;">
+      <div class="tracking-steps steps-one" style="display:none;">
+        <div class="tracking-stat-nb">1</div>
+        <div class="tracking-text">{{ 'tracking.message1' | t }}</div>
+      </div>
+      <div class="tracking-steps steps-two" style="display:none;">
+        <div class="tracking-stat-nb">2</div>
+        <div class="tracking-text">{{ 'tracking.message2' | t }}</div>
+      </div>
+      <div class="tracking-steps steps-three" style="display:none;">
+        <div class="tracking-stat-nb">3</div>
+        <div class="tracking-text">{{ 'tracking.message3' | t }}</div>
+      </div>
+      <div class="tracking-steps steps-four" style="display:none;">
+        <div class="tracking-stat-nb">4</div>
+        <div class="tracking-text">{{ 'tracking.message4' | t }}</div>
+      </div>
+      <div class="tracking-steps steps-nothing" style="display:none;">
+        <div class="tracking-stat-nb">X</div>
+        <div class="tracking-text">{{ 'tracking.message_nothing' | t }}</div>
+      </div>
+    </div>
+    {% if section.settings.show_tracking_url == true %} 
+    <div id="url-tracking" style="display:none;">
+      <a id="updateTrackUrl" target="_blank" href="{{ section.settings.tracksourceurl }}">{{ 'tracking.add_link_text' | t }}</a>
+    </div>
+    {% endif %}
+  </div>
+      
+  <script>
+  function getXDomainRequest() {
+     var xdr = null;
+     if (window.XDomainRequest) {
+             xdr = new XDomainRequest(); 
+     } else if (window.XMLHttpRequest) {
+             xdr = new XMLHttpRequest(); 
+     }
+     return xdr;        
+  }
+  function sendData() {
+      var subButton = $('#submitTrack');
+      subButton.text('Chargement...');
+      var orderNumber = $('#trackingnumber').val();
+      var xdr = getXDomainRequest();
+      xdr.onload = function() {
+          var sourceCode = xdr.responseText;
+          //console.log('sourcecode->'+sourceCode);
+          if(sourceCode.indexOf("Packed for picking-up.") != -1) {
+              $('#orderStat').show();
+              $('.steps-one').show();
+          } else if(sourceCode.indexOf("Your parcel is in transit") != -1) {
+              $('#orderStat').show();
+              $('.steps-one').show();
+              $('.steps-two').show();
+          } else if(sourceCode.indexOf("Your parcel has arrived in the country of destination.") != -1) {
+              $('#orderStat').show();
+              $('.steps-one').show();
+              $('.steps-two').show();
+              $('.steps-three').show();
+          } else if(sourceCode.indexOf("Your parcel has been successfully delivered.") != -1) {
+              $('#orderStat').show();
+              $('.steps-one').show();
+              $('.steps-two').show();
+              $('.steps-three').show();
+              $('.steps-four').show();
+          } else {
+              $('#orderStat').show();
+              $('.steps-nothing').show();
+          }
+          // Add tracking url
+          if ($("#url-tracking").length) {
+              $("#url-tracking").show();
+              var trackingUrlHref = $("#updateTrackUrl").attr('href');
+              $("#updateTrackUrl").attr('href',trackingUrlHref+orderNumber);
+          }
+      }
+      xdr.open("GET", "https://dltapp.eu/trackingapp/order.php?st={{shop.permanent_domain}}&number="+orderNumber);
+      xdr.send();
+  }
+  </script>
+      
+{% elsif section.settings.select_tracking_method == 'aliexpress' %}
+      
+  <div class="parcel-tracking-container">
+    <input type="text" id="YQNum" maxlength="50"/>
+    <input id="inputbtn17" type="button" value="{{ 'tracking.submit' | t }}" onclick="doTrack()"/>
+    <div id="YQContainer"></div>
+
+    <script type="text/javascript" src="//www.17track.net/externalcall.js"></script>
+    <script type="text/javascript">
+    function doTrack() {
+        var num = document.getElementById("YQNum").value;
+        if(num===""){
+            alert("{{ 'tracking.no_track_number' | t }}"); 
+            return;
+        }
+        YQV5.trackSingle({
+            //Required, Specify the container ID of the carrier content.
+            YQ_ContainerId:"YQContainer",
+            //Optional, specify tracking result height, max height 800px, default is 560px.
+            YQ_Height:560,
+            //Optional, select carrier, default to auto identify.
+            YQ_Fc:"0",
+            //Optional, specify UI language, default language is automatically detected based on the browser settings.
+            YQ_Lang:"en",
+            //Required, specify the number needed to be tracked.
+            YQ_Num:num
+        });
+    }
+    </script>
+  </div>
+{% else %}
+  <div class="parcel-tracking-container">
+    <p>{{ 'tracking.jafar_message0' | t }}</p>
+    <div class="form-inline" action="">
+      <input type="text" id="trackingnumberjafar" placeholder="{{ 'tracking.jafar_placeholder' | t }}" value="" required>
+      <input type="date" id="datejafar" placeholder="" value="" required>
+      <button type="submit" id="submitJafar" onClick="sendJafar()">{{ 'tracking.submit' | t }}</button>
+    </div>
+    <p id="form-track-error" style="display:none;">{{ 'tracking.jafar_message1' | t }}</p>
+
+    <div id="no-tracking" class="trackingjafar" style="display:none;">
+      <p class="tj-text-1">{{ 'tracking.jafar_message2' | t }} <span class="on-way">{{ 'tracking.jafar_message3' | t }}</span></p>
+      <div class="tj-loading">
+        <div class="tj-loading-bar tj-loading-bar-grey"></div>
+      </div>
+      <p class="tj-text-2">{{ 'tracking.jafar_message4' | t }}</p>
+      <p class="tj-text-3">{{ 'tracking.jafar_message5' | t }} <span class="firstdeliverydate"></span> {{ 'tracking.jafar_message6' | t }} <span class="seconddeliverydate"></span></p>
+    </div>
+    
+    <div id="on-delivery" class="trackingjafar" style="display:none;">
+      <p class="tj-text-1">{{ 'tracking.jafar_status1_1' | t }} <span class="on-way">{{ 'tracking.jafar_status1_2' | t }}</span></p>
+      <div class="tj-loading">
+        <div class="tj-loading-bar"></div>
+      </div>
+      <p class="tj-text-2">{{ 'tracking.jafar_message7' | t }}</p>
+      <p class="tj-text-3">{{ 'tracking.jafar_message5' | t }} <span class="firstdeliverydate"></span> {{ 'tracking.jafar_message6' | t }} <span class="seconddeliverydate"></span></p>
+    </div>
+    
+    <div id="on-delay" class="trackingjafar" style="display:none;">
+      <p class="tj-text-1">{{ 'tracking.jafar_status1_1' | t }} <span class="on-way">{{ 'tracking.jafar_status1_2' | t }}</span></p>
+      <div class="tj-loading">
+        <div class="tj-loading-bar tj-loading-bar-orange"></div>
+      </div>
+      <p class="tj-text-2">{{ 'tracking.jafar_message8' | t }}</p>
+      <p class="tj-text-3">{{ 'tracking.jafar_message5' | t }} <span class="firstdeliverydate"></span> {{ 'tracking.jafar_message6' | t }} <span class="seconddeliverydate"></span></p>
+    </div>
+    
+  </div>
+
+<script>
+  
+function dateFormat(inputDate) {
+    var date = new Date(inputDate);
+    if (!isNaN(date.getTime())) {
+        // Months use 0 index.
+        return date.getMonth() + 1 + '/' + date.getDate() + '/' + date.getFullYear();
+    }
+}
+  
+function addDays(date, days) {
+  var result = new Date(date);
+  result.setDate(result.getDate() + days);
+  return result;
+}
+  
+function sendJafar() {
+     if($.trim($('#trackingnumberjafar').val()) == ''){
+        $('#form-track-error').show();
+     } else if(!$('#datejafar').val()) {
+       	$('#form-track-error').show();
+     } else {
+        var nbDaysDeliveryMin = {{ section.settings.min_days_delivery }};
+        var nbDaysDeliveryMax = {{ section.settings.max_days_delivery }};
+        var jafarDate = $('#datejafar').val();
+        var jafarDateFormat = new Date(jafarDate);
+        var dayNow = new Date();
+        if (jafarDateFormat > dayNow) {
+          return;
+        }
+        jafarDate = jafarDate.replace(/-/g, ',');
+        var today = new Date();
+        var dd = String(today.getDate()).padStart(2, '0');
+        var mm = String(today.getMonth() + 1).padStart(2, '0');
+        var yyyy = today.getFullYear();
+        today = yyyy + ',' + mm + ',' + dd;
+        var oneDay = 24*60*60*1000;
+        var firstDate = new Date(jafarDate);
+        var secondDate = new Date(today);
+        var diffDays = Math.round(Math.abs((firstDate.getTime() - secondDate.getTime())/(oneDay)));
+        function getDeliveryDates(averageNumber) {
+           var averageDeliveryTimeMin = nbDaysDeliveryMin + nbDaysDeliveryMax - 5;
+           var averageDeliveryTimeMax = nbDaysDeliveryMin + nbDaysDeliveryMax + averageNumber;
+           var minDeliveryDate = addDays(jafarDateFormat, averageDeliveryTimeMin)
+           var maxDeliveryDate = addDays(jafarDateFormat, averageDeliveryTimeMax)
+           var minDay = minDeliveryDate.getDate();
+           var minMonth = minDeliveryDate.getMonth() + 1;
+           var minYear = minDeliveryDate.getFullYear();
+           var maxDay = maxDeliveryDate.getDate();
+           var maxMonth = maxDeliveryDate.getMonth() + 1;
+           var maxYear = maxDeliveryDate.getFullYear();        
+           $('.firstdeliverydate').text(minDay+'/'+minMonth+'/'+minYear);
+           $('.seconddeliverydate').text(maxDay+'/'+maxMonth+'/'+maxYear);
+        }
+        if(diffDays < nbDaysDeliveryMin ) {
+          $('.trackingjafar').hide();
+          $('#no-tracking').show();
+          getDeliveryDates(5);
+        } else if(diffDays >= nbDaysDeliveryMin && diffDays < nbDaysDeliveryMax) {
+          $('.trackingjafar').hide();
+          $('#on-delivery').show();
+          getDeliveryDates(5);
+        } else {
+          $('.trackingjafar').hide();
+          $('#on-delay').show();
+          getDeliveryDates(10);
+        }
+     } 
+}
+</script>
+
+{% endif %}
+
+{% schema %}
+  {
+    "name": "Tracking options",
+    "settings": [
+    {
+       "type": "select",
+       "id": "select_tracking_method",
+       "options": [
+		  { "value": "trackingjafar", "label": "TrackingJafar"},
+          { "value": "aliexpress", "label": "Aliexpress Tracking (Cainiao)"},
+          { "value": "17track", "label": "17Track Tracking"}
+       ],
+	   "default":   "trackingjafar",
+       "label": {
+          "en": "Tracking method",
+          "fr": "Méthode de tracking"
+      }
+    },
+    {
+       "type": "header",
+       "content": {
+          "en": "Tracking Jafar",
+          "fr": "Tracking Jafar"
+      	},
+       "info": {
+          "en": "Tracking Jafar settings",
+          "fr": "Paramètres pour Tracking Jafar"
+      }
+    },
+    {
+        "type":"range",
+        "id":"min_days_delivery",
+        "min": 0,
+        "max": 10,
+        "step": 1,
+        "label":{
+          "en": "Number of days to setup order",
+          "fr": "Nombre de jours pour traiter la commande"
+      	},
+        "default":   3
+    },
+    {
+        "type":"range",
+        "id":"max_days_delivery",
+        "min": 0,
+        "max": 60,
+        "step": 1,
+        "label":{
+          "en": "Number of days to delivery order",
+          "fr": "Nombre de jour pour livrer la commande"
+      	},
+        "default":   15
+    },
+    {
+       "type": "header",
+       "content": {
+          "en": "Add tracking link",
+          "fr": "Ajouter un lien de tracking"
+      	},
+       "info": {
+          "en": "Only for Aliexpress Tracking",
+          "fr": "Aliexpress Tracking seulement"
+      }
+    },
+    {
+      "type": "checkbox",
+      "id": "show_tracking_url",
+      "label": {
+          "en": "Show",
+          "fr": "Afficher"
+      },
+      "default": true
+    },
+     {
+      "type": "select",
+      "id": "tracksourceurl",
+      "label": {
+          "en": "Link from",
+          "fr": "Lien provenant de"
+      },
+      "options": [
+       {
+         "value": "http://global.cainiao.com/detail.htm?mailNoList=",
+         "label": "cainiao.com"
+       },
+       {
+         "value": "https://track.aftership.com/china-ems/",
+         "label": "aftership.com"
+       },
+       {
+         "value": "https://track24.net/?code=",
+         "label": "track24.net"
+       },
+       {
+        "value": "http://parcelsapp.com/fr/tracking/",
+        "label": "parcelapp.com"
+      }
+    ],
+      "default": "http://parcelsapp.com/fr/tracking/"
+    }
+]
+  }
+{% endschema %}
+
+{% stylesheet %}
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}

@@ -1,0 +1,12 @@
+{% if section.settings.show_save_money == true %}
+  {% if current_variant.compare_at_price != current_variant.price %}
+    <div class="percentageoff" id="updatepercentageoff">
+      {% if product.compare_at_price > product.price %}
+      	{% comment %}
+      	{{ 'booster.save_money' | t }} <span class="money" id="variantsaveprice">{{ product.compare_at_price | minus: product.price | money }}</span> (<span id="variantpercent">{{ product.compare_at_price | minus: product.price | times: 100.0 | divided_by: product.compare_at_price | floor }}</span> %)
+      	{% endcomment %}
+      	{{ 'booster.save_money' | t }} <span id="variantpercent">{{ product.compare_at_price | minus: product.price | times: 100.0 | divided_by: product.compare_at_price | floor }}</span> %
+      {% endif %}
+    </div>
+  {% endif %}
+{% endif %}

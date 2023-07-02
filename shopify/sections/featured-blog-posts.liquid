@@ -1,0 +1,86 @@
+	{% if section.settings.show_featured_blog_posts == true %}      
+		<div class="grid__item medium-up--one-quarter large-up--one-fifth">
+          <div class="content-block content-block--small">
+            <h3 class="h6 content-block__title">{{ 'blogs.article.featured_blog_posts' | t }}</h3>
+            <ul class="list--no-bullets list--bold">
+			  
+              {% if section.settings.featured_article_1 != blank %}
+              {% assign article_1 = articles[section.settings.featured_article_1] %}
+                <li class="recent_posts_margin"><a href="{{ article_1.url }}">{{ article_1.title }}</a></li>
+              {% endif %}
+              
+              {% if section.settings.featured_article_2 != blank %}
+              {% assign article_2 = articles[section.settings.featured_article_2] %}
+                <li class="recent_posts_margin"><a href="{{ article_2.url }}">{{ article_2.title }}</a></li>
+              {% endif %}
+              
+              {% if section.settings.featured_article_3 != blank %}
+              {% assign article_3 = articles[section.settings.featured_article_3] %}
+                <li class="recent_posts_margin"><a href="{{ article_3.url }}">{{ article_3.title }}</a></li>
+              {% endif %}
+              
+              {% if section.settings.featured_article_4 != blank %}
+              {% assign article_4 = articles[section.settings.featured_article_4] %}
+                <li class="recent_posts_margin"><a href="{{ article_4.url }}">{{ article_4.title }}</a></li>
+              {% endif %}
+              
+              {% if section.settings.featured_article_5 != blank %}
+              {% assign article_5 = articles[section.settings.featured_article_5] %}
+                <li class="recent_posts_margin"><a href="{{ article_5.url }}">{{ article_5.title }}</a></li>
+              {% endif %}
+
+            </ul>
+          </div>
+        </div>
+	{% endif %}
+
+{% schema %}
+  {
+    "name": {
+      "en": "Featured blog posts",
+      "fr": "Articles en vedette"
+      },
+    "settings": [
+      {
+        "type": "checkbox",
+        "id": "show_featured_blog_posts",
+        "label": {
+          "en": "Enable",
+          "fr": "Activer"
+        },
+        "default": true
+      },
+      {
+         "type": "article",
+         "id": "featured_article_1",
+         "label": "Article 1"
+      },
+      {
+         "type": "article",
+         "id": "featured_article_2",
+         "label": "Article 2"
+      },
+      {
+         "type": "article",
+         "id": "featured_article_3",
+         "label": "Article 3"
+      },
+      {
+         "type": "article",
+         "id": "featured_article_4",
+         "label": "Article 4"
+      },
+      {
+         "type": "article",
+         "id": "featured_article_5",
+         "label": "Article 5"
+      }
+	]
+  }
+{% endschema %}
+
+{% stylesheet %}
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}

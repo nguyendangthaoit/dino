@@ -1,0 +1,60 @@
+{% if section.settings.show_newsletter_blog_posts == true %}
+		<div class="grid__item medium-up--one-quarter large-up--one-fifth">
+          <div class="content-block content-block--small">
+            <h3 class="h6 content-block__title">{{ 'blogs.article.newsletter' | t }}</h3>
+            <p style="text-align:left;">{{ section.settings.show_newsletter_text_blog_posts }}</p>
+            <ul class="list--no-bullets list--bold">
+              {% form 'customer' %}
+                {{ form.errors | default_errors }}
+                {% if form.posted_successfully? %}
+                  <p class="form-success">{{ 'general.newsletter_form.confirmation' | t }}</p>
+                {% else %}
+                  <input type="hidden" name="contact[tags]" value="newsletter">
+                  <label for="NewsletterEmail-{{ block.id }}" class="label--hidden">{{ 'general.newsletter_form.newsletter_label' | t }}</label>
+                  <div class="input-group">
+                    <input type="email" value="{% if customer %}{{ customer.email }}{% endif %}" placeholder="{{ 'general.newsletter_form.newsletter_placeholder' | t }}" name="contact[email]" id="NewsletterEmail-{{ block.id }}" class="input-group__field" autocorrect="off" autocapitalize="off">
+                    <div class="input-group__btn">
+                      <button type="submit" class="btn btn--narrow" name="commit">
+                        {% include 'icon-arrow-right' %}
+                        <span class="icon__fallback-text">{{ 'general.newsletter_form.submit' | t }}</span>
+                      </button>
+                    </div>
+                  </div>
+                {% endif %}
+              {% endform %}
+            </ul>
+          </div>
+        </div>
+{% endif %}
+
+{% schema %}
+  {
+    "name": "Newsletter",
+    "settings": [
+    {
+      "type": "checkbox",
+      "id": "show_newsletter_blog_posts",
+      "label": {
+          "en": "Enable",
+          "fr": "Activer"
+      },
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "show_newsletter_text_blog_posts",
+      "label": "Text",
+      "default": {
+          "en": "Subscribe to receive the latest updates.",
+          "fr": "Recevez nos articles dans votre boite email."
+      }
+    }
+	]
+  }
+{% endschema %}
+
+{% stylesheet %}
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}

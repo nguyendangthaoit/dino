@@ -1,0 +1,39 @@
+{% if template != 'cart' %}
+<div id="modalSpecial" class="modal-special" style="visibility: hidden; opacity: 0; transition: visibility 1s ease 0s, opacity 0.5s linear 0s;">
+  <div class="modal-content-special">
+    <div class="modal-background-special" style="background-image:url('{{ settings.image_popup | img_url: 'master' }}');">
+      <div class="modal-shadow-special">
+        <div class="modal-header-special">
+          <span class="close-special">&times;</span>
+        </div>
+        <div class="modal-title-special">{{ settings.title_popup }}</div>
+        <div class="modal-text-special">{{ settings.text_popup }}</div>
+        <a href="{{ settings.url_popup }}" class="btn btn-modal-special">{{ settings.btn_popup }}</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+var modal = document.getElementById("modalSpecial");
+var span = document.getElementsByClassName("close-special")[0];
+/*cookie*/
+var modalSpecialCookie = Cookies.get('mspecial-cookie');
+if(modalSpecialCookie != 'valid') {
+  setTimeout(function() {
+      modal.style.visibility = "visible";
+      modal.style.opacity = "1";
+      Cookies.set('mspecial-cookie', 'valid', { expires: 1 });
+  }, {{ settings.delay_popup }}000);
+}
+/*endcookie*/
+span.onclick = function() {
+  modal.style.display = "none";
+}
+window.onclick = function(event) {
+  if (event.target == modal) {
+    modal.style.display = "none";
+  }
+}
+</script>
+{% endif %}

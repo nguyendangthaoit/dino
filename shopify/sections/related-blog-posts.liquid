@@ -1,0 +1,70 @@
+{% if section.settings.show_related_blog_posts == true %}
+	{% if blog.articles_count > 0 %}
+		<hr>
+		<h3 class="h4" {% if section.settings.center_related_posts_title == true %}style="text-align:center;"{% endif %}>{{ 'blogs.article.recent_posts' | t }}</h3>
+        <div class="pull-left content-block content-block--small">
+            {% for article in blog.articles limit:4 %}
+              <div class="grid__item medium-up--one-quarter small--one-half grid__related-blog-posts-sm">
+                <a href="{{ article.url }}" class="article-block">
+                  {% if article.image %}
+                    <img class="article-block__img" src="{{ article | img_url: '480x480' }}">
+                  {% endif %}
+                  <div class="article-block__info">
+                    <span class="article-block__date">
+                      {{ article.published_at | time_tag: format: 'month_day_year' }}
+                    </span>
+                    <h6 class="article-block__title">{{ article.title }}</h6>
+                  </div>
+                </a>
+              </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+{% endif %}
+
+{% schema %}
+  {
+    "name": {
+    "en": "Last blog posts",
+    "fr": "Derniers articles"
+  	},
+    "settings": [
+    {
+      "type": "checkbox",
+      "id": "show_related_blog_posts",
+      "label": {
+            "en": "Enable",
+            "fr": "Activer"
+       },
+      "default": true
+    },
+	 {
+      "type": "text",
+      "id": "title_last_posts",
+      "label": {
+        "en": "Heading",
+        "fr": "Titre"
+      },
+	  "default": {
+        "en": "Last blog posts",
+        "fr": "ARTICLES RÉCENTS"
+      }
+	},
+    {
+      "type": "checkbox",
+      "id": "center_related_posts_title",
+      "label": {
+            "en": "Center Title",
+            "fr": "Centrer le titre"
+       },
+      "default": false
+    }
+	]
+  }
+{% endschema %}
+
+{% stylesheet %}
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}

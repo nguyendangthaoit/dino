@@ -1,0 +1,83 @@
+<div id="faqWrapper">
+	<div id="accordion">
+      
+      {% for block in section.blocks %}
+      	{% if block.type == 'richtext' %}
+          <div class="accordion-toggle">
+              <p>{{ block.settings.faq_title }}</p>
+              <span></span>
+          </div>
+          <section class="accordion-content">
+              <p>{{ block.settings.faq_info }}</p>
+          </section>
+      	{% elsif block.type == 'text' %}
+      		<h3>{{ block.settings.faq_section_title }}</h3>
+      	{% endif %}
+      {% endfor %}
+      
+	</div>
+</div>
+
+<script>
+$(document).ready(function(){$(function(){$("#accordion").find(".accordion-toggle").click(function(){$(".accordion-toggle p").css({"font-weight":"400","color":"inherit"}),$(this).children('p').css({"font-weight": "600", "color":"{{ settings.color_onclick_faq }}"}),$(this).next().slideToggle(300),$(".accordion-content").not($(this).next()).slideUp(300)})})});
+</script>
+
+{% schema %}
+  {
+    "name": {
+          "en": "FAQ Settings",
+          "fr": "Configurer FAQ"
+    },
+    "class": "index-section",
+    "max_blocks": 30,
+    "settings": [
+	],
+    "blocks": [
+      {
+        "type": "text",
+        "name": {
+          "en": "Heading",
+          "fr": "Titre"
+        },
+        "settings": [
+          {
+          "type": "text",
+          "id": "faq_section_title",
+          "label": {
+              "en": "Section name",
+              "fr": "Nom de la section"
+          },
+          "default": "..."
+          }
+        ]
+      },
+      {
+        "type": "richtext",
+        "name": {
+          "en": "Question",
+          "fr": "Question"
+        },
+        "settings": [
+          {
+          "type": "text",
+          "id": "faq_title",
+          "label": {
+              "en": "Heading",
+              "fr": "Titre"
+          },
+          "default": "..."
+          },
+          {
+          "type": "richtext",
+          "id": "faq_info",
+          "label": {
+              "en": "Description",
+              "fr": "Description"
+          },
+		  "default": "<p>...</p>"
+          }
+        ]
+      }
+    ]
+  }
+{% endschema %}

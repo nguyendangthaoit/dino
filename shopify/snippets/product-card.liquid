@@ -1,0 +1,134 @@
+<!-- /snippets/product-card.liquid -->
+
+{% comment %}
+  The product card snippet is passed a liquid object, used in this file
+  as "product". The object is either "product" or "item", the latter if
+  it is from search results.
+{% endcomment %}
+
+<a href="{{ product.url | within: collection }}" class="product-card">
+  {% comment %} <img src="{{ product.featured_image.src | img_url: '480x480' }}" alt="{{ product.featured_image.alt | escape }}" class="product-card__image"> {% endcomment %}
+  {% assign image = product.featured_image %}
+  <div class="product-card__image-container">
+    <div class="product-card__image-wrapper {% if settings.collection_show_second_product_img == true %}reveal{% endif %}">
+      <div class="product-card__image js" style="max-width: {% include 'image-width' with image: image, width: 235 %}px;" data-image-id="{{ image.id }}">
+        <div style="padding-top:{{ 1 | divided_by: image.aspect_ratio | times: 100 }}%;">
+          {% assign img_url = image | img_url: '1x1' | replace: '_1x1.', '_{width}x.' %}
+          <img class="lazyload"
+            data-src="{{ img_url }}"
+            data-widths="[100, 140, 180, 250, 305, 440, 610, 720, 930, 1080]"
+            data-aspectratio="{{ image.aspect_ratio }}"
+            data-sizes="auto"
+            data-parent-fit="contain"
+            alt="{{ image.alt | escape }}">
+          {% if product.images.size > 1 and settings.collection_show_second_product_img == true %}
+              <img class="hidden" src="{{ product.images[1] | product_img_url: 'large' }}" alt="{{ product.images[1].alt | escape }}" />
+          {% endif %}
+        </div>
+      </div>
+      <noscript>
+        <img src="{{ product.featured_image.src | img_url: '480x480' }}" alt="{{ product.featured_image.alt | escape }}" class="product-card__image">
+      </noscript>
+    </div>
+  </div>
+  <div class="product-card__info">
+    {% if settings.product_vendor_enable %}
+      <div class="product-card__brand">{{ product.vendor }}</div>
+    {% endif %}
+
+    <{{ divh3tag }} class="product-card__name index-menu">{{ product.title }}</{{ divh3tag }}>
+
+    {% if product.available %}
+      <div class="product-card__price">
+        {% if product.compare_at_price > product.price %}
+          {% comment %}
+            Product is on sale
+          {% endcomment %}
+            <span class="visually-hidden">{{ 'products.product.regular_price' | t }}</span>
+        	<s class="product-card__regular-price"><span class="money">{{ product.compare_at_price | money }}</span></s>
+
+            <span class="visually-hidden">{{ 'products.product.sale_price' | t }}</span>
+         	{% if settings.hide_trailing_zeros == true %}
+        		<span class="money">{{ product.price | money_without_trailing_zeros }}</span>
+        	{% else %}
+        		<span class="money">{{ product.price | money }}</span>
+        	{% endif %}
+        {% else %}
+          {% comment %}
+            Not on sale, but could still have varying prices
+          {% endcomment %}
+          {% if product.price_varies %}
+            {% assign price = product.price | money %}
+            {{ 'products.product.from_text_html' | t: price: price }}
+          {% else %}
+            <span class="visually-hidden">{{ 'products.product.regular_price' | t }}</span>
+         	{% if settings.hide_trailing_zeros == true %}
+        		<span class="money">{{ product.price | money_without_trailing_zeros }}</span>
+        	{% else %}
+        		<span class="money">{{ product.price | money }}</span>
+        	{% endif %}
+          {% endif %}
+
+        {% endif %}
+      </div>
+    {% else %}
+      <div class="product-card__availability">
+        {{ 'products.product.sold_out' | t }}
+      </div>
+    {% endif %}
+    
+    {% assign option_index = 0 %}
+    {% for option in product.options %}
+        {% capture downcased_option %}{{ option | downcase }}{% endcapture %}
+        {% assign option_index = forloop.index0 %}
+        {% assign is_color = false %}
+        {% if downcased_option contains 'color' or downcased_option contains 'colour' or downcased_option contains 'couleur' %}
+            {% assign is_color = true %}
+        {% endif %}
+        {% assign how_many_options = 0 %}
+        {% assign current_options = '' %}
+        {% for variant in product.variants %}
+            {% if is_color %}
+                {% assign current_option = variant.options[option_index] %}
+                {% unless current_options contains current_option %}
+                    {% if how_many_options > 0 %}
+                        {% assign current_options = current_options | join: '|' | append: '|' %}
+                    {% endif %}
+                    {% assign current_options = current_options | append: current_option %}
+                    {% assign current_options = current_options | split: '|' | sort %}
+                    {% assign how_many_options = current_options | size %}
+                {% endunless %}
+            {% endif %}
+        {% endfor %}
+        {% if is_color %}
+            {% unless option == "Title" %}
+    			{% if current_options.size > 1 %}
+                    <div class="if-product-variant">
+                        {{current_options.size}} {{ 'products.product.show_prod_variants' | t }}
+                    </div>
+    			{% endif %}
+            {% endunless %}
+        {% endif %}
+    {% endfor %}
+
+    <div id="collection-product-reviews">
+      {% include 'product-reviews-stars' %}
+    </div>
+  </div>
+
+  {% if product.compare_at_price > product.price %}
+    {% comment %}
+      A visually-hidden label before regular/sale prices clarifies
+      prices for screen readers, so hide the sale tag from them.
+    {% endcomment %}
+    <div class="product-tag product-tag--absolute" aria-hidden="true" style="background-color:{{ settings.color_on_sale }};">
+      {{ 'products.product.on_sale' | t }}
+    </div>
+  {% endif %}
+  {% if settings.collection_show_second_product_img == false %}
+  <div class="product-card__overlay">
+    {% assign view_string_length = 'products.product.view' | t | size %}
+    <span class="btn product-card__overlay-btn {% if view_string_length > 8 %} btn--narrow{% endif %}">{{ 'products.product.view' | t }}</span>
+  </div>
+  {% endif %}
+</a>

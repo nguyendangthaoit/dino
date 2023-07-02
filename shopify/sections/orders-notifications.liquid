@@ -1,0 +1,159 @@
+{% if section.settings.show_order_notification == true %}
+  
+{% assign counter = 0 %}  
+{% assign break_at = section.settings.livenotificationnumberproduct %}
+
+  {% for product in collections.all.products %}
+
+	<div class="live-noti-box" style="visibility:hidden;opacity:0;transition:visibility 0s, opacity 0.5s linear;{% if section.settings.livenotidesign == "square" %}border-radius:3px;{% endif %}">
+      <img src="{{ product | img_url }}" style="{% if section.settings.livenotidesign == "round" %}margin-left:-8px;{% endif %}{% if section.settings.livenotidesign == "square" %}border-radius:3px;{% endif %}">
+      <p class="live-p">{{ 'orders_notifications.text_1' | t }} <span class="random-city"></span>{{ 'orders_notifications.text_2' | t }}</p>
+      <p class="live-p-big"><a href="{{ product.url }}">{{ product.title }}</a></p>
+      <p class="live-p-min">{{ 'orders_notifications.text_3' | t }} <span class="order-notifications-random"></span> {{ 'orders_notifications.text_4' | t }}</p>
+    </div>
+
+    {% assign counter = counter | plus: 1 %}
+    {% if counter == break_at %}
+      {% break %}
+    {% endif %}
+
+  {% endfor %}
+
+{% endif %}
+
+<script>
+setInterval(function() {
+  var randomNotificationNumber = Math.floor((Math.random() * 29) + 1);
+  var randomProductNumber = Math.floor((Math.random() * 8) + 1);
+  //
+  var citiesArray = [
+    '{{ 'orders_notifications.city_1' | t }}',
+    '{{ 'orders_notifications.city_2' | t }}',
+    '{{ 'orders_notifications.city_3' | t }}',
+    '{{ 'orders_notifications.city_4' | t }}',
+    '{{ 'orders_notifications.city_5' | t }}',
+    '{{ 'orders_notifications.city_6' | t }}',
+    '{{ 'orders_notifications.city_7' | t }}',
+    '{{ 'orders_notifications.city_8' | t }}',
+    '{{ 'orders_notifications.city_9' | t }}',
+    '{{ 'orders_notifications.city_10' | t }}',
+    '{{ 'orders_notifications.city_11' | t }}',
+    '{{ 'orders_notifications.city_12' | t }}',
+    '{{ 'orders_notifications.city_13' | t }}',
+    '{{ 'orders_notifications.city_14' | t }}',
+    '{{ 'orders_notifications.city_15' | t }}',
+    '{{ 'orders_notifications.city_16' | t }}',
+    '{{ 'orders_notifications.city_17' | t }}',
+    '{{ 'orders_notifications.city_18' | t }}',
+    '{{ 'orders_notifications.city_19' | t }}',
+    '{{ 'orders_notifications.city_20' | t }}',
+    '{{ 'orders_notifications.city_21' | t }}',
+    '{{ 'orders_notifications.city_22' | t }}',
+    '{{ 'orders_notifications.city_23' | t }}',
+    '{{ 'orders_notifications.city_24' | t }}',
+    '{{ 'orders_notifications.city_25' | t }}',
+    '{{ 'orders_notifications.city_26' | t }}',
+    '{{ 'orders_notifications.city_27' | t }}',
+    '{{ 'orders_notifications.city_28' | t }}',
+    '{{ 'orders_notifications.city_29' | t }}',
+    '{{ 'orders_notifications.city_30' | t }}',
+    '{{ 'orders_notifications.city_31' | t }}',
+    '{{ 'orders_notifications.city_32' | t }}',
+    '{{ 'orders_notifications.city_33' | t }}',
+    '{{ 'orders_notifications.city_34' | t }}',
+    '{{ 'orders_notifications.city_35' | t }}',
+    '{{ 'orders_notifications.city_36' | t }}',
+    '{{ 'orders_notifications.city_37' | t }}',
+    '{{ 'orders_notifications.city_38' | t }}',
+    '{{ 'orders_notifications.city_39' | t }}',
+    '{{ 'orders_notifications.city_40' | t }}',
+    '{{ 'orders_notifications.city_41' | t }}',
+    '{{ 'orders_notifications.city_42' | t }}',
+    '{{ 'orders_notifications.city_43' | t }}',
+    '{{ 'orders_notifications.city_44' | t }}',
+    '{{ 'orders_notifications.city_45' | t }}',
+    '{{ 'orders_notifications.city_46' | t }}',
+    '{{ 'orders_notifications.city_47' | t }}'
+  ];
+  var randomIndexCity = Math.floor(Math.random() * citiesArray.length); 
+  var randomCity = citiesArray[randomIndexCity];
+  //
+  var delayBetween = {{section.settings.livenotificationtime}};
+  var delayBetweenLessThree = delayBetween - 3;
+  var delayBetweenMoreThree = delayBetween + 3;
+  function randomInRange(start,end){
+         return Math.floor(Math.random() * (end - start + 1) + start);
+  }
+  var randomNumberForDelay = randomInRange(delayBetweenLessThree,delayBetweenMoreThree);
+  //
+  $('.live-noti-box').css({"visibility":"hidden","opacity":"0"});
+  $('.live-noti-box:nth-child('+randomProductNumber+')').css({"visibility":"visible","opacity":"1"});
+  $('.random-city').text(randomCity);
+  $('.live-p-min > span:visible').text(randomNotificationNumber);
+  setTimeout(function() {
+    $('.live-noti-box').css({"visibility":"hidden","opacity":"0", "transition":"visibility 1s, opacity 0.5s linear"});
+  }, 4000);
+}, {{section.settings.livenotificationtime}}000);
+</script>
+
+{% schema %}
+{
+  "name": "Live Notifications",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "show_order_notification",
+      "label": {
+		"en": "Enable",
+		"fr": "Activer"
+	  },
+      "default": false,
+	  "info": {
+		"en": "You must have several products on your shop.",
+		"fr": "Vous devez avoir plusieurs produits sur votre boutique."
+	  }
+    },
+    {
+        "type": "range",
+        "id": "livenotificationtime",
+        "min": 5,
+        "max": 100,
+        "step": 1,
+        "unit": "S",
+        "label": {
+			"en": "Average time between notifications",
+			"fr": "Temps moyen entre les notifications"
+		},
+        "default": 15
+    },
+    {
+        "type": "range",
+        "id": "livenotificationnumberproduct",
+        "min": 1,
+        "max": 100,
+        "step": 1,
+        "label": {
+			"en": "Number of different products",
+			"fr": "Nombre de produits différents"
+		},
+        "default": 12
+    },
+    {
+       "type": "select",
+       "id": "livenotidesign",
+       "options": [
+          { "value": "round", "label": {"en":"round","fr":"rond"}},
+          { "value": "square", "label": {"en":"square","fr":"carré"}}
+       ],
+       "label": "Design",
+	   "default": "round"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Live Notifications",
+      "category": "Extras"
+    }
+  ]
+}
+{% endschema %}

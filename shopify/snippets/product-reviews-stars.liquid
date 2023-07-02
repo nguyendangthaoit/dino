@@ -1,0 +1,10 @@
+{% if settings.enable_reviews_app == "none" %}
+{% elsif settings.enable_reviews_app == "product-reviews" %}
+	<span class="shopify-product-reviews-badge" data-id="{{ product.id }}"></span>
+{% elsif settings.enable_reviews_app == "ali-reviews" %}
+	<div product-id="{{ product.id }}" class="alr-display-review-badge"></div>
+{% elsif settings.enable_reviews_app == "ryviu" %}
+	<div class="review-widget"> <ryviu-widget-total reviews_data="{{product.metafields.ryviu.product_reviews_info | escape }}" product_id="{{product.id}}" handle="{{product.handle}}"> </ryviu-widget-total> </div>
+{% elsif settings.enable_reviews_app == "loox" %}
+	<div class="loox-rating" data-id="{{ product.id }}" data-rating="{{ product.metafields.loox.avg_rating }}" data-raters="{{ product.metafields.loox.num_reviews }}"></div>
+{% endif %}

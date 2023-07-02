@@ -1,0 +1,218 @@
+.contaninehome {
+  background-image: url(../images/bg.jpg);
+  min-height: 100%;
+  width: 100%;
+  min-width: 1366px;
+  position: absolute;
+}
+.rowhome {
+  padding-top: 15px;
+  .centerMain {
+    overflow-x: auto;
+    padding-top:50px;
+
+    @media only screen and (min-width: 1366px)  {
+      padding-top:0;
+    }
+  }
+}
+.panel {
+  background-image: url(../images/panel-bg.png);
+  border: 1px solid #000;
+  border-radius: 10px;
+  box-shadow: 0 0 3px rgba(0, 0, 0, 0.5), inset 0 0 1px rgba(254, 198, 0, 1);
+  list-style: none outside none;
+  display: block;
+  padding: 0.2rem 0.7rem 0.7rem;
+  width: 4.3rem;
+  position: relative;
+  z-index: 99;
+  .item {
+    padding: 5px;
+    text-align: center;
+    border: 1px solid #000;
+    border-radius: 15px;
+    display: inline-block;
+    // width: 45px;
+    // height: 41px;
+    width: 43px;
+    height: 39px;
+    margin: 0.5rem 0 0 0;
+    background-color: white;
+
+    border: 1px solid transparent;
+    display: block;
+    padding: 5px;
+    text-align: center;
+    a {
+      border: 1px solid #000;
+      -webkit-border-radius: 15px;
+      -moz-border-radius: 15px;
+      border-radius: 15px;
+      display: inline-block;
+      width: 45px;
+      height: 41px;
+      margin: -0.39rem 0 0 -0.38rem;
+    }
+  }
+  .active {
+    border-radius: 5px;
+    background: none repeat scroll 0 0 rgba(0, 0, 0, 0.5);
+    border: 1px solid #000;
+    width: 60px;
+    height: 55px;
+    margin-left: -7px;
+    padding-left: inherit;
+    padding-top: 13px;
+  }
+}
+
+.lefttoolbox {
+  // float: right;
+  height: 600px;
+  .wrap-swither {
+    bottom: 5px;
+    left: 0;
+    padding-bottom: 9px;
+    z-index: 1000;
+    position: relative !important;
+    padding-left: 0 !important;
+  }
+  .wrap-swither #clear,
+  .wrap-swither #save {
+    display: block;
+    width: 66px;
+    background: url("../images/clear.png") center top no-repeat;
+    padding-top: 51px;
+    color: #8c2300;
+    font-size: 12px;
+    font-weight: bold;
+    margin-left: 0 !important;
+    height: auto;
+    margin-top: 10px;
+    float: none;
+  }
+  .wrap-swither #clear .ico,
+  .wrap-swither #save .ico {
+    display: inline;
+    background: none;
+  }
+  .wrap-swither #save {
+    background-image: url("../images/save.png");
+  }
+}
+#pencil {
+  background: url(../images/tools.png) scroll 50% 2px no-repeat #fff;
+}
+#brush {
+  background: url(../images/tools.png) scroll 50% -130px no-repeat #fff;
+}
+#crayon {
+  background: url(../images/tools.png) scroll 50% -65px no-repeat #fff;
+}
+#eraser {
+  background: url(../images/tools.png) scroll 50% -240px no-repeat #fff;
+}
+
+#small {
+  background: url(../images/sizes.png) scroll 12px 18px no-repeat #fff;
+}
+#normal {
+  background: url(../images/sizes.png) scroll 10px -50px no-repeat #fff;
+}
+#large {
+  background: url(../images/sizes.png) scroll 10px -116px no-repeat #fff;
+}
+.rightcolorbox {
+  // float: right;
+  .panel {
+    height: 485px;
+  }
+  .prev,
+  .next {
+    width: 58px;
+    height: 35px;
+    position: absolute;
+    left: 5px;
+    margin-left: 15px;
+    z-index: 100 !important;
+  }
+
+  .prev:hover,
+  .next:hover {
+    cursor: pointer;
+  }
+
+  .prev {
+    background: url(../images/nav.png) scroll 50% 8px no-repeat transparent;
+    top: 0;
+  }
+
+  .next {
+    background: url(../images/nav.png) scroll 50% -32px no-repeat transparent;
+    bottom: 0;
+    top: 458px;
+  }
+  ul li:first-child {
+    margin-top: 22px;
+  }
+}
+
+#center {
+  overflow: hidden;
+  border-radius: 10px;
+  border: 1px solid #000;
+  vertical-align: top;
+  display: inline-block;
+  margin: 0;
+  position: relative;
+  z-index: 1;
+  text-align: center;
+  // width: 550px;
+  // height: 450px;
+
+  #canvasDiv {
+    clear: both;
+    position: absolute;
+    height: 100%;
+    width: 100%;
+  }
+  .pencil :hover {
+    cursor: url(../images/pencil.cur) 0 30, auto;
+  }
+  .brush :hover {
+    cursor: url(../images/brush.cur) 0 30, auto;
+  }
+  .crayon :hover {
+    cursor: url(../images/crayon.cur) 0 30, auto;
+  }
+  .eraser :hover {
+    cursor: url(../images/eraser.cur) 0 30, auto;
+  }
+
+  #sketch {
+    background: #fff;
+    overflow: hidden;
+    border-radius: 10px;
+    width: 100% !important;
+    height: 100% !important;
+  }
+
+  #sketch-image {
+    overflow: hidden;
+    border-radius: 10px;
+    width: 100% !important;
+    height: 100% !important;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 0;
+    background-color: transparent;
+  }
+}
+.pictrureNameLabel {
+  &::after {
+    content: "*";
+    color: red;
+  }
+}

@@ -1,0 +1,35 @@
+// html,
+// body {
+//   position: relative;
+//   width: 100%;
+//   height: 100%;
+// }
+
+@media (max-width: 768px) {
+  #center {
+    // transform: scale(0.6);
+    transform: scale(0.8);
+    transform-origin: top left;
+  }
+}
+@media (max-width: 576px) {
+  // .lefttoolbox,
+  // .rightcolorbox {
+  //   transform: scale(0.8);
+  //   transform-origin: top center;
+  //   float: none !important;
+  // }
+
+  #center {
+    transform: scale(0.45);
+    transform-origin: top left;
+  }
+  .rowhome .col-2,
+  .rowhome .col-8 {
+    padding: 0;
+  }
+  .rightcolorbox .prev,
+  .rightcolorbox .next {
+    left: -10px;
+  }
+}

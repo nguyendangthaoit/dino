@@ -1,0 +1,85 @@
+<div class="page-width">
+  <article itemscope itemtype="http://schema.org/Article" class="grid">
+    {% if blog.template_suffix != 'coloring_category' %}
+      {% comment %}
+        The article contents can be found in /sections/article-content.liquid
+      {% endcomment %}
+
+      <div class="grid__item medium-up--three-quarters large-up--four-fifths">
+      	{% section 'article-content' %}
+      </div>
+
+
+      {% section 'featured-blog-posts' %}
+
+      {% section 'tag-blog-posts' %}
+
+      {% section 'newsletter-blog-posts' %}
+
+      <div class="grid__item">
+      	{% section 'related-blog-posts' %}
+      </div>
+
+      <div class="grid__item">
+      	{% section 'featured-products-subsection' %}
+      </div>
+
+      <div class="grid__item">
+        <div class="full-width full-width--return-link">
+          <a href="{{ blog.url }}" class="h1 return-link">
+            {% include 'icon-arrow-thin-left' %}
+            {{ 'blogs.article.back_to_blog' | t: title: blog.title }}
+          </a>
+        </div>
+      </div>
+	{% else %}
+      <div class="section-block section-block--padding">
+    	<div class="flex flex--grid flex--no-gutter">
+          <div class="flex__item flex flex--center-vertical medium-up--one-half">
+            <div class="flex__item">
+              <div class="image-content__image">
+                <div class="article__photo-wrapper" style="padding-top:{{ 1 | divided_by: article.image.aspect_ratio | times: 100}}%;">
+                {% assign img_url = article.image | img_url: '1x1' | replace: '_1x1.', '_{width}x.' %}
+                  <img class="lazyload" id="coloring-image"
+                    src="{{ article.image | img_url: '300x300' }}"
+                    data-src="{{ img_url }}"
+                    data-widths="[360, 540, 720, 900, 1080, 1296, 1512, 1728, 2048]"
+                    data-aspectratio="{{ article.image.aspect_ratio }}"
+                    data-sizes="auto"
+                    data-src-coloring="{{article.image.src | img_url: '2048x2048'}}"
+                    alt="{{ article.title | escape }}">
+                </div>
+              </div>
+            </div>
+        </div>
+        <div class="flex__item flex flex--center-vertical medium-up--one-half">
+          <div class="flex__item image-content__text text-left">
+            <p class="h5">Coloring page: {{article.title}}</p>
+            <p>Category: {{blog.title}}</p>
+            <p>Author: {{article.author}}</p>
+            <div class="coloring-buttons">
+              <button class="coloring-print-button" onClick="printColorImage()">Print it</button>
+              <button class="coloring-color-button" onClick="openColoringPage()">Color online</button>
+            </div>
+          </div>
+        </div>
+       </div>
+      </div>
+    <script>
+      function printColorImage() {
+      	let src = document.getElementById("coloring-image").getAttribute('data-src-coloring');
+		var win = window.open('');
+        win.document.write('<body style="margin:0; height:100%;text-align:center;">' +
+                           '<img src="' + src + '" onload="window.print(); window.close();"style="max-height:100%;max-width:100%;"/>' +
+                          '</body>');
+        win.focus();
+      }
+
+      function openColoringPage() {
+        let src = document.getElementById("coloring-image").getAttribute('data-src-coloring');
+        window.open('http://localhost:3000/?src=' + btoa(src));
+      }
+    </script>
+    {% endif %}
+  </article>
+</div>

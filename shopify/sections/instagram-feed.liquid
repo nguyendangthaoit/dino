@@ -1,0 +1,99 @@
+<script type="text/javascript" src="{{ 'instafeed.min.js' | asset_url }}"></script>
+<script type="text/javascript">
+	(function($){
+		$(window).on('load', function(){
+			$.instagramFeed({
+              	'username': '{{ section.settings.instagram_account }}',
+				'container': "#instagram-feed",
+				'display_profile': false,
+				'display_biography': false,
+				'display_gallery': true,
+				'get_raw_json': false,
+				'callback': null,
+				'styling': true,
+                'items': {{ section.settings.insta_images_number }},
+                'items_per_row': {{ section.settings.insta_images_per_row }},
+				'margin': 0.25
+			});
+		});
+	})(jQuery);
+</script>
+
+<div class="page-width" style="margin-bottom:50px;">
+  	{% if section.settings.instagram_title != blank %}
+  		<h4 class="h1--mini section-block__title instafeed-title">{{ section.settings.instagram_title }}</h4>
+ 	{% endif %}
+	<div id="instagram-feed"></div>
+</div>
+
+{% schema %}
+  {
+    "name": "Instagram Feed",
+    "settings": [
+      {
+         "type":      "text",
+         "id":        "instagram_account",
+         "label":     {
+            "fr":"Nom du compte instagram",
+            "en":"Instagram user name"
+          },
+         "default":   "instagram"
+      },
+      {
+         "type":      "text",
+         "id":        "instagram_title",
+         "label":     {
+            "fr":"Titre",
+            "en":"Title"
+          }
+      },
+      {
+         "type": "select",
+         "id": "insta_images_number",
+         "options": [
+            { "value": "4", "label": "4"},
+            { "value": "6", "label": "6"},
+			{ "value": "8", "label": "8"},
+			{ "value": "10", "label": "10"},
+			{ "value": "12", "label": "12"}
+         ],
+         "label": {
+            "fr":"Nombre d'images",
+            "en":"Number of pictures"
+         },
+         "default":   "8"
+      },
+      {
+         "type": "select",
+         "id": "insta_images_per_row",
+         "options": [
+            { "value": "3", "label": "3"},
+            { "value": "4", "label": "4"},
+			{ "value": "5", "label": "5"},
+			{ "value": "6", "label": "6"}
+         ],
+         "label": {
+            "fr":"Nombre d'images par ligne",
+            "en":"Number of pictures per row"
+         },
+         "default":   "4",
+         "info":{
+          "fr":"Enregistrez pour actualiser.",
+          "en":"Save to update."
+        }
+      }
+	],
+    "presets": [
+      {
+        "name": "Instagram Feed",
+        "category": "Extras"
+      }
+    ]
+  }
+{% endschema %}
+
+{% stylesheet %}
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}

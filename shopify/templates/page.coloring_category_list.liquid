@@ -1,0 +1,40 @@
+<div className="page-width">
+  <h1 className="small--text-center">{{page.title}}</h1>
+  {% if page.content.length %}
+  <div className="content-block">
+    <div className="rte rte--indented-images">
+      {{page.content}}
+    </div>
+  </div>
+  {% endif %}
+
+
+  <div className="grid grid--no-gutters grid--uniform">
+
+    {% for link in linklists.coloring-categories.links %}
+    {% assign blog = link.object %}
+    <div className="grid__item small--one-half medium-up--one-fifth grid___collection si-hover-product">
+      <a href="{{blog.url}}" className="product-card">
+        <div className="product-card__image-container">
+          <div className="product-card__image-wrapper">
+            <div className="blog-listing-image">
+              <img src="{{ blog.metafields.global.thumbnail }}"/>
+            </div>
+          </div>
+        </div>
+        <div className="product-card__info">
+          <div className="product-card__name">{{blog.title}} ({{blog.articles_count}})</div>
+          <div className="product-card__price">
+
+          </div>
+        </div>
+        <div className="product-card__overlay">
+          <span className="btn product-card__overlay-btn ">View</span>
+        </div>
+      </a>
+    </div>
+    {% endfor %}
+
+  </div>
+
+</div>
